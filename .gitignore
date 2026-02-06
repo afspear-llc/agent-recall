@@ -1,0 +1,7 @@
+out/
+node_modules/
+*.vsix
+.vscode-test/
+.claude/
+firebase-debug.log
+copilot-kb-implementation-plan.md

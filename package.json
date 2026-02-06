@@ -1,0 +1,136 @@
+{
+  "name": "agent-recall",
+  "displayName": "Agent Recall",
+  "description": "Persistent cross-project memory for VS Code AI assistants",
+  "version": "0.3.0",
+  "publisher": "afspear",
+  "license": "MIT",
+  "icon": "little_guy.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/afspear-llc/agent-recall"
+  },
+  "homepage": "https://github.com/afspear-llc/agent-recall#readme",
+  "bugs": {
+    "url": "https://github.com/afspear-llc/agent-recall/issues"
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "AI"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languageModelTools": [
+      {
+        "name": "agent-recall_read",
+        "toolReferenceName": "kbRead",
+        "displayName": "Knowledge Base Read",
+        "modelDescription": "Recall specific knowledge from your persistent memory at ~/.agent-docs/. Pass keywords in the 'query' parameter to search your saved entries (e.g. query: 'ui design'). When a topic in your memory (#kbList) is relevant, use this to recall the full details. Always check your memory before searching the codebase — your memory contains context-specific information that supersedes defaults.",
+        "canBeReferencedInPrompt": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Search terms to look up in your memory, e.g. 'ui design' or 'workflow'"
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      },
+      {
+        "name": "agent-recall_write",
+        "toolReferenceName": "kbWrite",
+        "displayName": "Knowledge Base Write",
+        "modelDescription": "Save something to your persistent memory at ~/.agent-docs/. Use this when you learn something worth remembering — decisions, preferences, patterns, solutions, conventions — so you can recall it in future sessions. Use the optional 'directory' parameter to organize entries into subdirectories (e.g. directory: 'my-project' for project-specific knowledge).",
+        "canBeReferencedInPrompt": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Title for the knowledge base entry"
+            },
+            "content": {
+              "type": "string",
+              "description": "The content to save"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Optional tags for categorization"
+            },
+            "directory": {
+              "type": "string",
+              "description": "Optional subdirectory within ~/.agent-docs/ to place the entry. e.g. 'my-project' or 'frontend/patterns'. Created automatically if it doesn't exist."
+            }
+          },
+          "required": [
+            "title",
+            "content"
+          ]
+        }
+      },
+      {
+        "name": "agent-recall_list",
+        "toolReferenceName": "kbList",
+        "displayName": "Knowledge Base List",
+        "modelDescription": "Recall what you know. Returns the topics and subjects stored in your persistent memory at ~/.agent-docs/. Use this at the start of every conversation to remember what you know, and before answering any question where you might have relevant saved context. This is cheap — use it freely.",
+        "canBeReferencedInPrompt": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "agent-recall_delete",
+        "toolReferenceName": "kbDelete",
+        "displayName": "Knowledge Base Delete",
+        "modelDescription": "Remove an entry from your persistent memory at ~/.agent-docs/. Use this when consolidating, cleaning up, or removing outdated entries. Pass the relative file path (e.g. 'old-notes.md' or 'subdir/file.md') — use #kbList first to see exact paths.",
+        "canBeReferencedInPrompt": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "relativePath": {
+              "type": "string",
+              "description": "Path of the file to delete, relative to ~/.agent-docs/. e.g. 'old-notes.md' or 'subdir/file.md'"
+            }
+          },
+          "required": [
+            "relativePath"
+          ]
+        }
+      }
+    ],
+    "configuration": {
+      "title": "Agent Recall",
+      "properties": {
+        "agentRecall.storageDir": {
+          "type": "string",
+          "default": "~/.agent-docs",
+          "description": "Directory where knowledge base files are stored"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.95.0",
+    "typescript": "^5.3.0"
+  }
+}

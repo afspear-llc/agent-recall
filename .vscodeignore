@@ -1,0 +1,12 @@
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+tsconfig.json
+**/*.map
+node_modules/**
+*.vsix
+.claude/**
+copilot-kb-implementation-plan.md
+firebase-debug.log
+CHANGELOG.md
