@@ -1,0 +1,28 @@
+## Add MCP Server Config (npx -y)
+
+Allow users to run agent-recall as an MCP server without `npm install` by using `npx -y`.
+
+### MCP Config (for Claude Desktop, Cursor, etc.)
+
+```json
+{
+  "mcpServers": {
+    "agent-recall": {
+      "command": "npx",
+      "args": ["-y", "agent-recall"]
+    }
+  }
+}
+```
+
+### Claude Code one-liner
+
+```bash
+claude mcp add agent-recall -- npx -y agent-recall
+```
+
+### What's needed
+
+- Ensure package.json has a `bin` entry pointing to the MCP server entrypoint
+- Publish the package to npm
+- Document the config in README.md
