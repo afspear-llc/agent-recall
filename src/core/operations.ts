@@ -110,10 +110,14 @@ export async function kbWrite(storageDir: string, params: KBWriteParams): Promis
 
     await fs.mkdir(targetDir, { recursive: true });
 
-    const slug = title
+    let slug = title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '');
+
+    if (!slug) {
+        slug = `entry-${Date.now()}`;
+    }
 
     const filename = `${slug}.md`;
     const filePath = path.join(targetDir, filename);
@@ -127,14 +131,16 @@ export async function kbWrite(storageDir: string, params: KBWriteParams): Promis
     }
 
     const timestamp = new Date().toISOString();
+    const escapedTitle = title.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     const frontmatterLines = [
         '---',
-        `title: "${title}"`,
+        `title: "${escapedTitle}"`,
         `created: ${timestamp}`,
         `updated: ${timestamp}`,
     ];
     if (tags && tags.length > 0) {
-        frontmatterLines.push(`tags: [${tags.map(t => `"${t}"`).join(', ')}]`);
+        const escapedTags = tags.map(t => `"${t.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`);
+        frontmatterLines.push(`tags: [${escapedTags.join(', ')}]`);
     }
     frontmatterLines.push('---', '');
 

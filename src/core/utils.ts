@@ -16,7 +16,7 @@ export function expandPath(p: string): string {
  * Resolve the storage directory from an optional override or default.
  */
 export function resolveStorageDir(storageDir?: string): string {
-    return expandPath(storageDir ?? '~/.agent-docs');
+    return path.resolve(expandPath(storageDir ?? '~/.agent-docs'));
 }
 
 /**

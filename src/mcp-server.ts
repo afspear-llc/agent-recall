@@ -59,7 +59,7 @@ async function main(): Promise<void> {
 
     server.tool(
         'kbRead',
-        'Search saved entries by keyword from your persistent memory at ~/.agent-docs/. ' +
+        'Search saved entries by keyword from your persistent memory (default: ~/.agent-docs/). ' +
         'Pass keywords in the query parameter to search (e.g. query: "ui design"). ' +
         'When a topic in your memory (kbList) is relevant, use this to recall the full details. ' +
         'Always check your memory before searching the codebase.',
@@ -81,7 +81,7 @@ async function main(): Promise<void> {
 
     server.tool(
         'kbWrite',
-        'Save something to your persistent memory at ~/.agent-docs/. ' +
+        'Save something to your persistent memory (default: ~/.agent-docs/). ' +
         'Use this when you learn something worth remembering — decisions, preferences, patterns, solutions, conventions — ' +
         'so you can recall it in future sessions. ' +
         'Use the optional directory parameter to organize entries into subdirectories.',
@@ -90,7 +90,7 @@ async function main(): Promise<void> {
             content: z.string().describe('The content to save'),
             tags: z.array(z.string()).optional().describe('Optional tags for categorization'),
             directory: z.string().optional().describe(
-                'Optional subdirectory within ~/.agent-docs/ to place the entry. ' +
+                'Optional subdirectory within the knowledge base to place the entry. ' +
                 'e.g. "my-project" or "frontend/patterns". Created automatically if it doesn\'t exist.'
             ),
         },
@@ -111,7 +111,7 @@ async function main(): Promise<void> {
 
     server.tool(
         'kbList',
-        'Recall what you know. Returns the topics and subjects stored in your persistent memory at ~/.agent-docs/. ' +
+        'Recall what you know. Returns the topics and subjects stored in your persistent memory (default: ~/.agent-docs/). ' +
         'Use this at the start of every conversation to remember what you know, ' +
         'and before answering any question where you might have relevant saved context. This is cheap — use it freely.',
         {},
@@ -132,12 +132,12 @@ async function main(): Promise<void> {
 
     server.tool(
         'kbDelete',
-        'Remove an entry from your persistent memory at ~/.agent-docs/. ' +
+        'Remove an entry from your persistent memory (default: ~/.agent-docs/). ' +
         'Use this when consolidating, cleaning up, or removing outdated entries. ' +
         'Pass the relative file path (e.g. "old-notes.md" or "subdir/file.md") — use kbList first to see exact paths.',
         {
             relativePath: z.string().describe(
-                'Path of the file to delete, relative to ~/.agent-docs/. e.g. "old-notes.md" or "subdir/file.md"'
+                'Path of the file to delete, relative to the knowledge base directory. e.g. "old-notes.md" or "subdir/file.md"'
             ),
         },
         async ({ relativePath }) => {

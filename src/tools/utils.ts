@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { expandPath } from '../core/utils';
 
-export { expandPath } from '../core/utils';
+export { expandPath };
 
 export function getStorageDirRaw(): string {
     const config = vscode.workspace.getConfiguration('agentRecall');
