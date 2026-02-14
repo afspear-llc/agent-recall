@@ -1,7 +1,7 @@
 {
   "name": "agent-recall",
   "displayName": "Agent Recall",
-  "description": "Persistent cross-project memory for VS Code AI assistants",
+  "description": "Persistent cross-project memory for AI assistants (VS Code extension + MCP server)",
   "version": "0.3.0",
   "publisher": "afspear",
   "license": "MIT",
@@ -24,6 +24,9 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "bin": {
+    "agent-recall-mcp": "./out/mcp-server.js"
+  },
   "contributes": {
     "languageModelTools": [
       {
@@ -126,11 +129,16 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "mcp": "node out/mcp-server.js"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.95.0",
     "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^4.3.6"
   }
 }
